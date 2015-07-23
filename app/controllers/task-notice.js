@@ -6,7 +6,7 @@ var express = require('express'),
     router = express.Router();
 var wxent = require('wechat-enterprise');
 var mysql = require('mysql');
-var config = require('../config/config');
+var config = require('../../config/config');
 
 /*
  微信事件消息处理程序。
@@ -55,7 +55,7 @@ var EventHandlers = {
 	'created_by_me': function (msg, req, res, next) {
         res.reply('ok'); // test case 1
 
-        // test case 2
+        // test case 2
         var conn = mysql.createConnection(config.wss_db);
         conn.connect();
         conn.query('select ...', function (err, rows, fields) {
