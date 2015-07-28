@@ -84,8 +84,8 @@ var EventHandlers = {
             var conn = mysql.createConnection(config.wss_db);
             conn.connect();
             conn.query('SELECT * FROM tk_task where tid > 10', function (err, rows, fields) {
-            	if(err) res.reply(JSON.stringify(err));
-                else res.reply(JSON.stringify(rows || {a:2}) || 'nul');
+            	if(err) res.reply('err');
+                else res.reply('nul');
             });
             conn.end();
         });
