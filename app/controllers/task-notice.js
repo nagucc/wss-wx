@@ -88,6 +88,13 @@ var EventHandlers = {
             });
             conn.end();
         });
+        
+        // 获取上次处理的任务id
+        client.get('min_tid', function (err, tid) {
+            if(err || !tid) tid = 0;
+        	ep.emit('min_tid', tid);
+            console.log('min_tid done');
+        });
 	}
 };
 
@@ -108,11 +115,7 @@ module.exports = function (app, cfg) {
 
     initUserList();
 
-    // 获取上次处理的任务id
-    client.get('min_tid', function (err, tid) {
-        if(err || !tid) tid = 0;
-    	ep.emit('min_tid', tid);
-    });
+    
 
     router.use('/', wxent(wxcfg, wxent.event(handleEvent(EventHandlers))));
 };
