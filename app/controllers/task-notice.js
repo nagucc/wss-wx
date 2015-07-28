@@ -7,6 +7,12 @@ var express = require('express'),
 var wxent = require('wechat-enterprise');
 var mysql = require('mysql');
 var config = require('../../config/config');
+var redis = require('redis'),
+	client = redis.createClient(6379, 'redis', {});
+
+client.on("error", function (err) {
+    console.log("Error " + err);
+});
 
 /*
  微信事件消息处理程序。
@@ -50,15 +56,21 @@ var handleText = function (textHandlers, sessionName) {
     };
 };
 
+var EventProxy = require('eventproxy');
+var ep = new EventProxy();
+
+var initUserList = function () {
+	client.set('user:qyhid:2', 'na57');
+}
+
+
 var EventHandlers = {
     /* 获取我创建的任务 */
 	'created_by_me': function (msg, req, res, next) {
-        res.reply('ok'); // test case 1
-
         // test case 2
         var conn = mysql.createConnection(config.wss_db);
         conn.connect();
-        conn.query('select ...', function (err, rows, fields) {
+        conn.query('SELECT * FROM tk_user', function (err, rows, fields) {
         	if(err) res.reply(JSON.stringify(err));
         	else {
         		res.reply('mysql conn success');
@@ -84,6 +96,12 @@ var wxcfg = {
 module.exports = function (app, cfg) {
     app.use(express.query());
     app.use('/task-notice', router);
+
+    initUserList();
+
+    client.get('min_tid', function (err, tid) {
+    	ep.emit('min_tid', tid);
+    });
 
     router.use('/', wxent(wxcfg, wxent.event(handleEvent(EventHandlers))));
 };
