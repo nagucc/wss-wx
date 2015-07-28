@@ -83,7 +83,7 @@ var EventHandlers = {
             // res.reply(config.wss_db);
             var conn = mysql.createConnection(config.wss_db);
             conn.connect();
-            conn.query('SELECT * FROM tk_task where tid > 10 limit 5', function (err, rows, fields) {
+            conn.query('SELECT * FROM tk_task where tid > 10', function (err, rows, fields) {
             	if(err) res.reply(JSON.stringify(err));
                 else res.reply(JSON.stringify(rows.length));
             });
