@@ -85,7 +85,7 @@ var EventHandlers = {
             conn.connect();
             conn.query('SELECT * FROM tk_task where tid > 10', function (err, rows, fields) {
             	if(err) res.reply(JSON.stringify(err));
-                else res.reply(JSON.stringify(rows) || 'nul');
+                else res.reply(JSON.stringify(rows || {a:2}) || 'nul');
             });
             conn.end();
         });
