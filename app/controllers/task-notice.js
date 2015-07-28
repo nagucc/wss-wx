@@ -16,13 +16,19 @@ var wxcfg = {
     encodingAESKey: config.notice.aesKey,
     corpId: config.qyh.corpId,
     secret: config.qyh.secret,
-    agentId: config.notice.agentId,
-    db: config.db
+    agentId: config.notice.agentId
 };
-var wxapi = require('../models/wxapi')(wxcfg);
+
 
 client.on("error", function (err) {
     console.log("Error " + err);
+});
+
+var MongoClient = require('mongodb').MongoClient,
+    ObjectID = require('mongodb').ObjectID;
+    
+MongoClient.connect(config.db, function (err, db) {
+    ep.emit('mongo', db);
 });
 
 /*
@@ -90,7 +96,7 @@ var initUserList = function () {
 var EventHandlers = {
     /* 获取我创建的任务 */
 	'created_by_me': function (msg, req, res, next) {
-        ep.all('min_tid', function(min_tid){
+        ep.all('min_tid', 'mongo', function(min_tid,db){
             // res.reply(config.wss_db);
             var conn = mysql.createConnection(config.wss_db);
             conn.connect();
@@ -98,6 +104,8 @@ var EventHandlers = {
             	if(err) res.reply(JSON.stringify(err));
                 // else res.reply(JSON.stringify(rows.length));
                 else {
+                    wxcfg.db = db;
+                    var wxapi = require('../models/wxapi')(wxcfg);
                     wxapi.send({touser: 'na57'}, {
                         msgtype: 'text',
                         text:{
