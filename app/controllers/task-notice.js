@@ -10,6 +10,17 @@ var config = require('../../config/config');
 var redis = require('redis'),
 	client = redis.createClient(6379, 'redis', {});
 
+
+var wxcfg = {
+    token: config.notice.token,
+    encodingAESKey: config.notice.aesKey,
+    corpId: config.qyh.corpId,
+    secret: config.qyh.secret,
+    agentId: config.notice.agentId,
+    db: config.db
+};
+var wxapi = require('../models/wxapi')(wxcfg);
+
 client.on("error", function (err) {
     console.log("Error " + err);
 });
@@ -83,9 +94,19 @@ var EventHandlers = {
             // res.reply(config.wss_db);
             var conn = mysql.createConnection(config.wss_db);
             conn.connect();
-            conn.query('SELECT * FROM tk_task where tid > 10 limit 2', function (err, rows, fields) {
+            conn.query('SELECT * FROM tk_task where tid >' + min_tid, function (err, rows, fields) {
             	if(err) res.reply(JSON.stringify(err));
-                else res.reply(JSON.stringify(rows));
+                // else res.reply(JSON.stringify(rows.length));
+                else {
+                    wxapi.send({touser: 'na57'}, {
+                        msgtype: 'text',
+                        text:{
+                            content: 'test msg'
+                        }
+                    }, function(err, result){
+                        res.reply('send done');
+                    });
+                }
             });
             conn.end();
         });
@@ -102,13 +123,7 @@ var EventHandlers = {
 var TextProcessHandlers = {
 };
 
-var wxcfg = {
-    token: config.notice.token,
-    encodingAESKey: config.notice.aesKey,
-    corpId: config.qyh.corpId,
-    secret: config.qyh.secret,
-    agentId: config.notice.agentId
-};
+
 
 module.exports = function (app, cfg) {
     app.use(express.query());
