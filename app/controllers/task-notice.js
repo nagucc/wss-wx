@@ -105,6 +105,7 @@ var EventHandlers = {
             	if(err) res.reply(JSON.stringify(err));
                 // else res.reply(JSON.stringify(rows.length));
                 else {
+                    console.log('ready send msg');
                     wxcfg.db = db;
                     var wxapi = require('../models/wxapi')(wxcfg);
                     wxapi.send({touser: 'na57'}, {
