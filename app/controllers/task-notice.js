@@ -98,6 +98,7 @@ var EventHandlers = {
     /* 获取我创建的任务 */
 	'created_by_me': function (msg, req, res, next) {
         ep.all('min_tid', 'mongo', function(min_tid,db){
+            console.log('min_tid&mongo done');
             // res.reply(config.wss_db);
             var conn = mysql.createConnection(config.wss_db);
             conn.connect();
