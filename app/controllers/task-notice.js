@@ -80,14 +80,14 @@ var EventHandlers = {
     /* 获取我创建的任务 */
 	'created_by_me': function (msg, req, res, next) {
         ep.all('min_tid', function(min_tid){
-            res.reply(config.wss_db);
-            // var conn = mysql.createConnection(config.wss_db);
-            // conn.connect();
-            // conn.query('SELECT * FROM tk_task where tid > ' + min_tid, function (err, rows, fields) {
-            // 	if(err) res.reply(err);
-            //     else res.reply(JSON.stringify(rows));
-            // });
-            // conn.end();
+            // res.reply(config.wss_db);
+            var conn = mysql.createConnection(config.wss_db);
+            conn.connect();
+            conn.query('SELECT * FROM tk_task where tid > ' + min_tid, function (err, rows, fields) {
+            	if(err) res.reply(JSON.stringify(err));
+                else res.reply(JSON.stringify(rows));
+            });
+            conn.end();
         });
         
         // 获取上次处理的任务id
