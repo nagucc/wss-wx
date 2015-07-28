@@ -83,9 +83,9 @@ var EventHandlers = {
             // res.reply(config.wss_db);
             var conn = mysql.createConnection(config.wss_db);
             conn.connect();
-            conn.query('SELECT 1 + 1 AS solution', function (err, rows, fields) {
+            conn.query('SELECT * FROM tk_task where tid > 10', function (err, rows, fields) {
             	if(err) res.reply(JSON.stringify(err));
-                else res.reply('The solution is: ' + rows[0].solution);
+                else res.reply('mysql done');
             });
             conn.end();
         });
@@ -94,7 +94,7 @@ var EventHandlers = {
         client.get('min_tid', function (err, tid) {
             if(err || !tid) tid = 0;
         	ep.emit('min_tid', tid);
-            console.log('min_tid done');
+            console.log('min_tid done: ' + tid);
         });
 	}
 };
