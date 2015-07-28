@@ -29,6 +29,7 @@ var MongoClient = require('mongodb').MongoClient,
     
 MongoClient.connect(config.db, function (err, db) {
     ep.emit('mongo', db);
+    console.log('mongodb success');
 });
 
 /*
