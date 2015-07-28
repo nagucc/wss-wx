@@ -58,27 +58,36 @@ var handleText = function (textHandlers, sessionName) {
 
 var EventProxy = require('eventproxy');
 var ep = new EventProxy();
-
 var initUserList = function () {
 	client.set('user:qyhid:2', 'na57');
 }
 
 
+/*
+ 查询新任务，并将新任务推送到用户微信端
+*/
+// var noticeNewTask = function(){
+//     ep.all('min_tid', function(min_tid){
+//         var conn = mysql.createConnection(config.wss_db);
+//         conn.connect();
+//         conn.query('SELECT * FROM tk_task where tid > ' + min_tid, function (err, rows, fields) {
+        	
+//         });
+//         conn.end();
+//     });
+// }
 var EventHandlers = {
     /* 获取我创建的任务 */
 	'created_by_me': function (msg, req, res, next) {
-        // test case 2
-        var conn = mysql.createConnection(config.wss_db);
-        conn.connect();
-        conn.query('SELECT * FROM tk_user', function (err, rows, fields) {
-        	if(err) res.reply(JSON.stringify(err));
-        	else {
-        		res.reply('mysql conn success');
-        	}
+        ep.all('min_tid', function(min_tid){
+            var conn = mysql.createConnection(config.wss_db);
+            conn.connect();
+            conn.query('SELECT * FROM tk_task where tid > ' + min_tid, function (err, rows, fields) {
+            	if(err) res.reply(err);
+                else res.reply(JSON.stringify(rows));
+            });
+            conn.end();
         });
-        conn.end();
-
-        // test case 3
 	}
 };
 
@@ -99,7 +108,9 @@ module.exports = function (app, cfg) {
 
     initUserList();
 
+    // 获取上次处理的任务id
     client.get('min_tid', function (err, tid) {
+        if(err || !tid) tid = 0;
     	ep.emit('min_tid', tid);
     });
 
