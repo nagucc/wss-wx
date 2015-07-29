@@ -106,7 +106,10 @@ var EventHandlers = {
     /* 获取我创建的任务 */
 	'users': function (msg, req, res, next) {
         initUserList();
-		res.reply('done');
+        client.get('user.qyhid:3', function(err, user){
+            res.reply(user);
+        });
+		
 	},
     'min_tid': function(msg, req, res, next){
         //client.set('wss.notice.min_tid', 33);
