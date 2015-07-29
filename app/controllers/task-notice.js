@@ -108,13 +108,11 @@ var EventHandlers = {
             if(err) ep.throw(err);
             else {
                 if(!min_tid) min_tid = 0;
-                else {
-                    var conn = mysql.createConnection(config.wss_db);
-                    conn.connect();
-                    console.log('starting to query mysql and tid = ' + min_tid);
-                    conn.query('SELECT * FROM tk_task where tid >' + min_tid, ep.done('tasks'));
-                    conn.end();
-                }
+                var conn = mysql.createConnection(config.wss_db);
+                conn.connect();
+                console.log('starting to query mysql and tid = ' + min_tid);
+                conn.query('SELECT * FROM tk_task where tid >' + min_tid, ep.done('tasks'));
+                conn.end();
             }
         });
         
