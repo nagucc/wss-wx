@@ -149,5 +149,5 @@ module.exports = function (app, cfg) {
 
     router.use('/', wxent(wxcfg, wxent.event(handleEvent(EventHandlers))));
     
-    taskNotice();
+    setTimeout(taskNotice, 10000);
 };
