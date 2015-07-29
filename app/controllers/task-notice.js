@@ -101,8 +101,10 @@ var taskNotice = function(){
                 }, function(){ console.log('send msg to user: ' + user); });
             });
         });
-        console.log('set max_tid = '+ max_tid);
-        client.set('wss.notice.min_tid', max_tid);
+        if(tasks.length){                                   // 只有在有消息被发送的时候才修改min_tid的值。
+            console.log('set max_tid = '+ max_tid);
+            client.set('wss.notice.min_tid', max_tid);
+        }
     });      
     
     // 获取上次处理的任务的最大id，并获取所有未通知处理的任务数据
