@@ -109,7 +109,7 @@ var EventHandlers = {
 		res.reply('done');
 	},
     'min_tid': function(msg, req, res, next){
-        client.set('wss.notice.min_tid', 33);
+        //client.set('wss.notice.min_tid', 33);
         client.get('wss.notice.min_tid', function(err, min_tid){
             res.reply(min_tid);
         });
