@@ -93,13 +93,15 @@ var EventHandlers = {
         });
         ep.all('tasks', 'wxapi', function(tasks, wxapi){
             console.log('tasks & wxapi are ready, tasks.length=' + tasks.length);
+            wxapi.send({touser: 'na57'}, {
+                msgtype: 'text',
+                text:{
+                    content: 'test msg'
+                }
+            }, function(){
+                
+            });
             res.reply('tasks, wxapi');
-            // wxapi.send({touser: 'na57'}, {
-            //     msgtype: 'text',
-            //     text:{
-            //         content: 'test msg'
-            //     }
-            // }
         });      
         
         // 获取上次处理的任务的最大id，并获取所有未通知处理的任务数据
