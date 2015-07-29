@@ -1,3 +1,4 @@
+/* global process */
 
 var env = process.env.NODE_ENV || 'production';
 
@@ -31,6 +32,11 @@ var config = {
         token: process.env.NOTICE_TOKEN,
         aesKey: process.env.NOTICE_AESKEY,
         agentId: process.env.NOTICE_AGENTID
+    },
+    user:{
+        token: process.env.USER_TOKEN,
+        aesKey: process.env.USER_AESKEY,
+        agentId: process.env.USER_AGENTID
     }
   }
 };
