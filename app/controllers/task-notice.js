@@ -86,9 +86,9 @@ var taskNotice = function(){
         console.log('tasks & wxapi are ready, tasks.length=' + tasks.length);
         var max_tid = 0;
         tasks.forEach(function(task) {
-            console.log('send msg to task.cas_to_user: ' + task.cas_to_user);
+            console.log('send msg to task.csa_to_user: ' + task.csa_to_user);
             max_tid = Math.max(max_tid, task.TID);
-            client.get('user.qyhid:'+task.cas_to_user, function(err, user){
+            client.get('user.qyhid:'+task.csa_to_user, function(err, user){
                 if(err) {
                     ep.throw(err);
                     return;
