@@ -88,9 +88,11 @@ var EventHandlers = {
         
         // 统一的出错处理
         ep.fail(function(err){
+            console.log('something is wrong');
             res.reply(JSON.stringify(err));
         });
         ep.all('taks', 'wxapi', function(tasks, wxapi){
+            console.log('tasks & wxapi are ready');
             res.reply('tasks, wxapi');
             // wxapi.send({touser: 'na57'}, {
             //     msgtype: 'text',
@@ -102,6 +104,7 @@ var EventHandlers = {
         
         // 获取上次处理的任务的最大id，并获取所有未通知处理的任务数据
         client.get('wss.notice.min_tid', function(err, min_tid){
+            console.log('wss.notice.min_tid is ready');
             if(err) ep.throw(err);
             else {
                 if(!min_tid) min_tid = 0;
@@ -121,6 +124,7 @@ var EventHandlers = {
                 wxcfg.db = db;
                 var wxapi = require('../models/wxapi')(wxcfg);
                 ep.emit('wxapi', wxapi);
+                console.log('wxapi is ready');
             }
         });
 	}
