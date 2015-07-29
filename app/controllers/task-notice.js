@@ -91,7 +91,7 @@ var EventHandlers = {
             console.log('something is wrong');
             res.reply(JSON.stringify(err));
         });
-        ep.all('taks', 'wxapi', function(tasks, wxapi){
+        ep.all('tasks', 'wxapi', function(tasks, wxapi){
             console.log('tasks & wxapi are ready');
             res.reply('tasks, wxapi');
             // wxapi.send({touser: 'na57'}, {
@@ -111,7 +111,11 @@ var EventHandlers = {
                 var conn = mysql.createConnection(config.wss_db);
                 conn.connect();
                 console.log('starting to query mysql and tid = ' + min_tid);
-                conn.query('SELECT * FROM tk_task where tid >' + min_tid, ep.done('tasks'));
+                conn.query('SELECT * FROM tk_task where tid >' + min_tid, function(err, rows){
+                    if(err) ep.throw(err);
+                    else ep.emit('tasks', rows);
+                    console.log('query is done');
+                });
                 conn.end();
             }
         });
