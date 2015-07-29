@@ -77,25 +77,18 @@ var handleText = function (textHandlers, sessionName) {
 var initUserList = function () {
 	client.set('user.qyhid:2', 'na57');
 	client.set('user.qyhid:3', 'thiswind');
-    // 字凤芹
 	client.set('user.qyhid:4', 'te8a0f7834bec4fa98f22c4e8a99e9b95');
 	
-    // 牛进
     client.set('user.qyhid:6', 't2dfdbebc7d3b40349a7a342c667f94f1');
 	
-    // 资月玲
     client.set('user.qyhid:7', 'ziyueling');
 	
-    // 李洋
     client.set('user.qyhid:8', 'liyang');
 	
-    // 刘东华
     client.set('user.qyhid:9', 'liudonghua');
 	
-    // 白扬
     client.set('user.qyhid:10', 'baiyang');
 	
-    // 周垚
     client.set('user.qyhid:11', 'jzg20130082');
     
 }

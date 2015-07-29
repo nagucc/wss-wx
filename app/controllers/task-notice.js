@@ -113,7 +113,6 @@ var taskNotice = function(){
             if(!min_tid) min_tid = 0;
             var conn = mysql.createConnection(config.wss_db);
             conn.connect();
-            min_tid = 58; // 测试用
             console.log('starting to query mysql and tid = ' + min_tid);
             conn.query('SELECT * FROM tk_task where tid >' + min_tid, ep.done('tasks'));
             conn.end();
@@ -135,8 +134,6 @@ var taskNotice = function(){
 var EventHandlers = {
     /* 获取我创建的任务 */
 	'created_by_me': function (msg, req, res, next) {
-        
-        
 	}
 };
 
