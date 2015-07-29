@@ -140,11 +140,17 @@ var EventHandlers = {
 var TextProcessHandlers = {
 };
 
+
+var checkNewNotice = function(){
+    taskNotice();
+    setTimeout(checkNewNotice, 10000);
+};
+
 module.exports = function (app, cfg) {
     // app.use(express.query());
     app.use('/task-notice', router);
 
     router.use('/', wxent(wxcfg, wxent.event(handleEvent(EventHandlers))));
     
-    setTimeout(taskNotice, 10000);
+    checkNewNotice();
 };
