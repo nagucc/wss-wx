@@ -96,7 +96,7 @@ var taskNotice = function(){
                 wxapi.send({touser: user}, {
                     msgtype: 'text',
                     text:{
-                        content: 'WSS新任务: ' + task.cas_text
+                        content: 'WSS新任务: ' + task.csa_text
                     }
                 }, function(){ console.log('send msg to user: ' + user); });
             });
