@@ -86,6 +86,7 @@ var taskNotice = function(){
         console.log('tasks & wxapi are ready, tasks.length=' + tasks.length);
         var max_tid = 0;
         tasks.forEach(function(task) {
+            console.log('send msg to task.cas_to_user: ' + task.cas_to_user);
             max_tid = Math.max(max_tid, task.TID);
             client.get('user.qyhid:'+task.cas_to_user, function(err, user){
                 if(err) {
@@ -131,34 +132,6 @@ var taskNotice = function(){
     });
 }
 
-var initUserList = function () {
-	client.set('user.qyhid:2', 'na57');
-	client.set('user.qyhid:3', 'thiswind');
-    // 字凤芹
-	client.set('user.qyhid:4', 'te8a0f7834bec4fa98f22c4e8a99e9b95');
-	
-    // 牛进
-    client.set('user.qyhid:6', 't2dfdbebc7d3b40349a7a342c667f94f1');
-	
-    // 资月玲
-    client.set('user.qyhid:7', 'ziyueling');
-	
-    // 李洋
-    client.set('user.qyhid:8', 'liyang');
-	
-    // 刘东华
-    client.set('user.qyhid:9', 'liudonghua');
-	
-    // 白扬
-    client.set('user.qyhid:10', 'baiyang');
-	
-    // 周垚
-    client.set('user.qyhid:11', 'jzg20130082');
-    
-}
-
-
-
 var EventHandlers = {
     /* 获取我创建的任务 */
 	'created_by_me': function (msg, req, res, next) {
@@ -173,8 +146,6 @@ var TextProcessHandlers = {
 module.exports = function (app, cfg) {
     // app.use(express.query());
     app.use('/task-notice', router);
-
-    initUserList();
 
     router.use('/', wxent(wxcfg, wxent.event(handleEvent(EventHandlers))));
     
