@@ -111,6 +111,7 @@ var EventHandlers = {
                 else {
                     var conn = mysql.createConnection(config.wss_db);
                     conn.connect();
+                    console.log('starting to query mysql and tid = ' + min_tid);
                     conn.query('SELECT * FROM tk_task where tid >' + min_tid, ep.done('tasks'));
                     conn.end();
                 }
