@@ -5,7 +5,7 @@
 
 
 var API = require('wechat-enterprise-api');
-var AccessToken = require('access-token-redis');
+var AccessToken = require('./at-redis');
 
 /*
 options参数
