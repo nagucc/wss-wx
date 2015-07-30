@@ -18,9 +18,9 @@ options参数
 */
 module.exports = function (options) {
     console.log('test 1: ' + options.port);
-    var At = new AccessToken(options.corpId, options.secret, 7000, options);
+    var at = new AccessToken(options.corpId, options.secret, 7000, options);
     var wxapi = new API(options.corpId, options.secret, options.agentId,
-        At.getToken, At.saveToken);
+        at.getToken, at.saveToken);
     // var AccessToken = require('access-token-mongo')(options.db, options.access_token_col);
 
 
