@@ -22,6 +22,11 @@ var At = function(appId, secret, expire, options){
     this.secret = secret;
     this.expire = expire || 7000;
     this.port = options.port || 6379;
+    this.host = options.host || 'localhost';
+    this.opt = options.opt || {};
+    this.atKey = self.appId + '.' + self.secret + '.at';
+    this.expireDateKey = self.appId + '.' + self.secret + '.expireDate';
+    
     this.redisOpt = {
         port : options.port || 6379,
         host : options.host || 'localhost',
@@ -41,12 +46,11 @@ At.prototype.test = function(){
 At.prototype.getToken = function(cb){
     var self = this;
     console.log('test 3: ' + this.port);
-    var client = redis.createClient(self.port,
-        self.redisOpt.host, self.redisOpt.opt);
-    client(self.keys.expireDate, function(err, date){
+    var client = redis.createClient(self.port, self.host, self.opt);
+    client(self.expireDateKey, function(err, date){
         if(err) cb(err);
         else if(moment().isBefore(date)) {      // token还在有效期
-            client.get(self.keys.at, cb);
+            client.get(self.atKey, cb);
         } else cb('err');
     });
 };
