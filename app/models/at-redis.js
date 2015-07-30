@@ -34,8 +34,8 @@ var At = function(appId, secret, expire, options){
 
 At.prototype.getToken = function(cb){
     var self = this;
-    var client = redis.createClient(self.redisOpt.port,
-        self.redisOpt.host, self.redisOpt.opt);
+    var client = redis.createClient(6379,
+        'redis', {});
     client(self.keys.expireDate, function(err, date){
         if(err) cb(err);
         else if(moment().isBefore(date)) {      // token还在有效期
