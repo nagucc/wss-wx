@@ -32,6 +32,11 @@ var At = function(appId, secret, expire, options){
         expireDate: self.appId + '.' + self.secret + '.expireDate'
     };
 };
+At.prototype.test = function(){
+    console.log(this.appId);
+    console.log(this.secret);
+    console.log(this.expire);
+};
 
 At.prototype.getToken = function(cb){
     var self = this;
