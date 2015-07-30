@@ -126,6 +126,9 @@ var taskNotice = function(){
         if(err) ep.throw(err);
         else {
             wxcfg.db = db;
+            wxcfg.port = 6379;
+            wxcfg.host = 'redis';
+            wxcfg.opt = {};
             var wxapi = require('../models/wxapi')(wxcfg);
             ep.emit('wxapi', wxapi);
             console.log('wxapi is ready');
