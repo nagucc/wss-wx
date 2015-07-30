@@ -41,7 +41,7 @@ At.prototype.test = function(){
 At.prototype.getToken = function(cb){
     var self = this;
     console.log('test 3: ' + this.port);
-    var client = redis.createClient(self.redisOpt.port,
+    var client = redis.createClient(self.port,
         self.redisOpt.host, self.redisOpt.opt);
     client(self.keys.expireDate, function(err, date){
         if(err) cb(err);
