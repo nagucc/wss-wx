@@ -51,7 +51,10 @@ At.prototype.getToken = function(cb){
     client.get(self.expireDateKey, function(err, date){
         if(err) cb(err);
         else if(moment().isBefore(date)) {      // token还在有效期
-            client.get(self.atKey, cb);
+            client.get(self.atKey, function(err, at){
+                console.log('at: ' + at);
+                cb(err, at);
+            });
         } else cb('err');
     });
 };
