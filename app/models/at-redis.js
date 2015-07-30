@@ -38,15 +38,16 @@ var At = function(appId, secret, expire, options){
     };
 };
 At.prototype.test = function(){
-    console.log(this.appId);
-    console.log(this.secret);
+    var self = this;
+    console.log(self.appId);
+    console.log(self.secret);
     console.log(this.expire);
+    console.log(self.host);
 };
 
 At.prototype.getToken = function(cb){
     var self = this;
-    console.log('test 3: ' + this.port);
-    var client = redis.createClient(self.port, self.host, self.opt);
+    var client = redis.createClient(6379, 'redis', {});
     client(self.expireDateKey, function(err, date){
         if(err) cb(err);
         else if(moment().isBefore(date)) {      // token还在有效期
