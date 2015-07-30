@@ -48,7 +48,7 @@ At.prototype.test = function(){
 At.prototype.getToken = function(cb){
     var self = this;
     var client = redis.createClient(6379, 'redis', {});
-    client(self.expireDateKey, function(err, date){
+    client.get(self.expireDateKey, function(err, date){
         if(err) cb(err);
         else if(moment().isBefore(date)) {      // token还在有效期
             client.get(self.atKey, cb);
@@ -58,10 +58,9 @@ At.prototype.getToken = function(cb){
 
 At.prototype.saveToken = function(token, cb){
     var self = this;
-    var client = redis.createClient(self.redisOpt.port,
-        self.redisOpt.host, self.redisOpt.opt);
-    client.set(self.keys.at, token);
-    client.set(self.keys.expireDate, moment().add(self.expire, 's'));
+    var client = redis.createClient(6379, 'redis', {});
+    client.set(self.atKey, token);
+    client.set(self.expireDateKey, moment().add(self.expire, 's'));
     cb(null, token);
 }
 
