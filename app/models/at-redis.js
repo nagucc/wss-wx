@@ -21,6 +21,7 @@ var At = function(appId, secret, expire, options){
     this.appId = appId;
     this.secret = secret;
     this.expire = expire || 7000;
+    this.port = options.port || 6379;
     this.redisOpt = {
         port : options.port || 6379,
         host : options.host || 'localhost',
@@ -34,8 +35,9 @@ var At = function(appId, secret, expire, options){
 
 At.prototype.getToken = function(cb){
     var self = this;
-    var client = redis.createClient(6379,
-        'redis', {});
+    console.log('test 3: ' + this.port);
+    var client = redis.createClient(self.redisOpt.port,
+        self.redisOpt.host, self.redisOpt.opt);
     client(self.keys.expireDate, function(err, date){
         if(err) cb(err);
         else if(moment().isBefore(date)) {      // token还在有效期
