@@ -17,9 +17,9 @@ options参数
     - expire token的过期时间，默认为7000(毫秒)
 */
 module.exports = function (options) {
-    console.log('test 1: ' + options.port);
+    // console.log('test 1: ' + options.port);
     var at = new AccessToken(options.corpId, options.secret, 7000, options);
-    at.test();
+    // at.test();
     var wxapi = new API(options.corpId, options.secret, options.agentId,
         at.getToken, at.saveToken);
     // var AccessToken = require('access-token-mongo')(options.db, options.access_token_col);

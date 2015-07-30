@@ -86,7 +86,7 @@ var taskNotice = function(){
         console.log('tasks & wxapi are ready, tasks.length=' + tasks.length);
         var max_tid = 0;
         tasks.forEach(function(task) {
-            console.log('send msg to task.csa_to_user: ' + task.csa_to_user);
+            // console.log('send msg to task.csa_to_user: ' + task.csa_to_user);
             max_tid = Math.max(max_tid, task.TID);
             client.get('user.qyhid:'+task.csa_to_user, function(err, user){
                 if(err) {
@@ -98,24 +98,26 @@ var taskNotice = function(){
                     text:{
                         content: 'WSS新任务: ' + task.csa_text
                     }
-                }, function(){ console.log('send msg to user: ' + user); });
+                }, function(err, result){
+                    console.log('send result: ' + err || result); 
+                });
             });
         });
         if(tasks.length){                                   // 只有在有消息被发送的时候才修改min_tid的值。
-            console.log('set max_tid = '+ max_tid);
+            // console.log('set max_tid = '+ max_tid);
             client.set('wss.notice.min_tid', max_tid);
         }
     });      
     
     // 获取上次处理的任务的最大id，并获取所有未通知处理的任务数据
     client.get('wss.notice.min_tid', function(err, min_tid){
-        console.log('wss.notice.min_tid is ready');
+        // console.log('wss.notice.min_tid is ready');
         if(err) ep.throw(err);
         else {
             if(!min_tid) min_tid = 0;
             var conn = mysql.createConnection(config.wss_db);
             conn.connect();
-            console.log('starting to query mysql and tid = ' + min_tid);
+            // console.log('starting to query mysql and tid = ' + min_tid);
             conn.query('SELECT * FROM tk_task where tid >' + min_tid, ep.done('tasks'));
             conn.end();
         }
@@ -131,7 +133,7 @@ var taskNotice = function(){
             wxcfg.opt = {};
             var wxapi = require('../models/wxapi')(wxcfg);
             ep.emit('wxapi', wxapi);
-            console.log('wxapi is ready');
+            // console.log('wxapi is ready');
         }
     });
 }
