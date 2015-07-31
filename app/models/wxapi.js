@@ -5,7 +5,7 @@
 
 
 var API = require('wechat-enterprise-api');
-var AccessToken = require('./at-redis');
+
 
 /*
 options参数
@@ -17,33 +17,28 @@ options参数
     - expire token的过期时间，默认为7000(毫秒)
 */
 module.exports = function (options) {
-    // console.log('test 1: ' + options.port);
-    var at = new AccessToken(options.corpId, options.secret, 7000, options);
-    // at.test();
+    var AccessToken = require('access-token-mongo')(options.db, options.access_token_col);
+
+
     var wxapi = new API(options.corpId, options.secret, options.agentId,
-        at.getToken, at.saveToken);
-    // var AccessToken = require('access-token-mongo')(options.db, options.access_token_col);
-
-
-    // var wxapi = new API(options.corpId, options.secret, options.agentId,
-    //     function(callback){
-    //         AccessToken.getToken({
-    //             appId: options.corpId,
-    //             appSecret: options.secret
-    //         }, function(err, token){
-    //             callback(null, token);
-    //         })
-    //     },
-    //     function(token, callback){
-    //         AccessToken.saveToken({
-    //             appId: options.corpId,
-    //             appSecret: options.secret,
-    //             expire: options.expire || 7000
-    //         }, token, function(){
-    //             callback(null, token);
-    //         });
-    //     }
-    // );
+        function(callback){
+            AccessToken.getToken({
+                appId: options.corpId,
+                appSecret: options.secret
+            }, function(err, token){
+                callback(null, token);
+            })
+        },
+        function(token, callback){
+            AccessToken.saveToken({
+                appId: options.corpId,
+                appSecret: options.secret,
+                expire: options.expire || 7000
+            }, token, function(){
+                callback(null, token);
+            });
+        }
+    );
 
     return wxapi;
 };

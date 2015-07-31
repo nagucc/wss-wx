@@ -16,7 +16,6 @@ var moment = require('moment');
     * opt 其他redis参数
  */
 var At = function(appId, secret, expire, options){
-    console.log('test 2: ' + options.port);
     var self = this;
     this.appId = appId;
     this.secret = secret;
