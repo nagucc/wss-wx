@@ -12,8 +12,6 @@ var redis = require('redis'),
 client.on("error", function (err) {
     console.log("Error " + err);
 });
-var MongoClient = require('mongodb').MongoClient,
-    ObjectID = require('mongodb').ObjectID;
 
 var EventProxy = require('eventproxy');
     
@@ -82,7 +80,7 @@ var taskNotice = function(){
     ep.fail(function(err){
         console.log('something is wrong:' + err);
     });
-    ep.all('tasks', 'wxapi', function(tasks, wxapi){
+    ep.all('tasks',  function(tasks){
         console.log('tasks & wxapi are ready, tasks.length=' + tasks.length);
         var max_tid = 0;
         tasks.forEach(function(task) {
@@ -93,6 +91,7 @@ var taskNotice = function(){
                     ep.throw(err);
                     return;
                 }
+                var wxapi = require('../models/wxapi')();
                 wxapi.send({touser: user}, {
                     msgtype: 'text',
                     text:{
@@ -118,17 +117,6 @@ var taskNotice = function(){
             console.log('starting to query mysql and tid = ' + min_tid);
             conn.query('SELECT * FROM tk_task where tid >' + min_tid, ep.done('tasks'));
             conn.end();
-        }
-    });
-    
-    // 连接Mongo数据库，并准备wxapi
-    MongoClient.connect(config.db, function (err, db) {
-        if(err) ep.throw(err);
-        else {
-            wxcfg.db = db;
-            var wxapi = require('../models/wxapi')(wxcfg);
-            ep.emit('wxapi', wxapi);
-            console.log('wxapi is ready');
         }
     });
 }
