@@ -1,0 +1,24 @@
+# Redis Server
+redis:
+  image: redis
+  volumes:
+    - /srv/mydir/database/redis/data:/data
+  restart: always
+#wechat app
+wx:
+  image: ynuae/wss-wx
+  ports:
+    - "35003:18080"
+  links:
+    - redis:redis
+  environment:
+    - QYH_CORPID=corpId
+    - QYH_SECRET=secret
+    - NOTICE_TOKEN=token
+    - NOTICE_AESKEY=aeskey
+    - NOTICE_AGENTID=4
+    - USER_TOKEN=token
+    - USER_AESKEY=aeskey
+    - USER_AGENTID=26
+    - WSS_DB_URI=mysql://user:pass@host/tankdb
+  restart: always
