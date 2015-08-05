@@ -91,7 +91,7 @@ var taskNotice = function(){
                     ep.throw(err);
                     return;
                 }
-                var wxapi = require('../models/wxapi')();
+                var wxapi = require('../models/wxapi')(wxcfg);
                 wxapi.send({touser: user}, {
                     msgtype: 'text',
                     text:{
